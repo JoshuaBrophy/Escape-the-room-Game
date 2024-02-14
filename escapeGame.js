@@ -33,29 +33,67 @@ class Player {
       this.name = name;
       this.difficulty = difficulty;
       this.score = 0;
-      this.health = 15;
-      this.attackDamage = 20;
+      this.health = 100;
+      this.attackDamage = this.generateRandomDamage(3, 5);
       this.speed = 10;
-      this.luck = 5;
+      this.luck = this.generateRandomLuck();
+    }
     }
   
+  /*
     increaseScore(points) {
       this.score += points;
     }
-  
-    
-  }
-  
-  class Enemy1 {
-    constructor(name, difficulty, health, attackDamage, speed, luck) {
-      this.name = Rat;
-      this.difficulty = difficulty;
-      this.health = 7;
-      this.attackDamage = attackDamage;
-      this.speed = 10;
-      this.luck = 5;
+
+    generateRandomDamage(min, max) {
+      return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
+    generateRandomLuck() {
+      return Math.min(Math.floor(Math.random() * 21), 20); // Cap luck at 20
+    }
+  */
+    
+  
+  
+class Enemy {
+  constructor(name, difficulty, health, minAttackDamage, maxAttackDamage, speed, luck) {
+    this.name = name;
+    this.difficulty = difficulty;
+    this.health = health;
+    this.minAttackDamage = minAttackDamage;
+    this.maxAttackDamage = maxAttackDamage;
+    this.speed = speed;
+    this.luck = Math.min(luck, 20);
+  }
+}
+generateRandomDamage(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function startGame() {
+  console.log("Welcome to");
+  console.log(" ▄▀▀█▄▄▄▄  ▄▀▀▀▀▄  ▄▀▄▄▄▄   ▄▀▀█▄   ▄▀▀▄▀▀▀▄  ▄▀▀█▄▄▄▄     
+  ▐  ▄▀   ▐ █ █   ▐ █ █    ▌ ▐ ▄▀ ▀▄ █   █   █ ▐  ▄▀   ▐     
+    █▄▄▄▄▄     ▀▄   ▐ █        █▄▄▄█ ▐  █▀▀▀▀    █▄▄▄▄▄      
+    █    ▌  ▀▄   █    █       ▄▀   █    █        █    ▌      
+   ▄▀▄▄▄▄    █▀▀▀    ▄▀▄▄▄▄▀ █   ▄▀   ▄▀        ▄▀▄▄▄▄       
+   █    ▐    ▐      █     ▐  ▐   ▐   █          █    ▐       
+   ▐                ▐                ▐          ▐            
+               ▄▀▀▀█▀▀▄  ▄▀▀▄ ▄▄   ▄▀▀█▄▄▄▄                  
+              █    █  ▐ █  █   ▄▀ ▐  ▄▀   ▐                  
+              ▐   █     ▐  █▄▄▄█    █▄▄▄▄▄                   
+                 █         █   █    █    ▌                   
+               ▄▀         ▄▀  ▄▀   ▄▀▄▄▄▄                    
+              █          █   █     █    ▐                    
+              ▐          ▐   ▐     ▐                         
+           ▄▀▀▄▀▀▀▄  ▄▀▀▀▀▄   ▄▀▀▀▀▄   ▄▀▀▄ ▄▀▄              
+          █   █   █ █      █ █      █ █  █ ▀  █              
+          ▐  █▀▀█▀  █      █ █      █ ▐  █    █              
+           ▄▀    █  ▀▄    ▄▀ ▀▄    ▄▀   █    █               
+          █     █     ▀▀▀▀     ▀▀▀▀   ▄▀   ▄▀                
+          ▐     ▐                     █    █                 
+                                      ▐    ▐");
 /*
  ▄▀▀▀▀▄    ▄▀▀█▄   ▄▀▀▄ ▄▀▄  ▄▀▀█▄▄▄▄     
 █         ▐ ▄▀ ▀▄ █  █ ▀  █ ▐  ▄▀   ▐     
