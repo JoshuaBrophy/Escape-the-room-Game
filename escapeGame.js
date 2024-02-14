@@ -38,16 +38,17 @@ class Player {
       this.speed = 10;
       this.luck = this.generateRandomLuck();
     }
-    }
-  
+}
+
+generateRandomDamage(3, 5) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
   /*
     increaseScore(points) {
       this.score += points;
     }
 
-    generateRandomDamage(min, max) {
-      return Math.floor(Math.random() * (max - min + 1) + min);
-    }
+    
 
     generateRandomLuck() {
       return Math.min(Math.floor(Math.random() * 21), 20); // Cap luck at 20
@@ -73,27 +74,18 @@ generateRandomDamage(min, max) {
 
 function startGame() {
   console.log("Welcome to");
-  console.log(" ▄▀▀█▄▄▄▄  ▄▀▀▀▀▄  ▄▀▄▄▄▄   ▄▀▀█▄   ▄▀▀▄▀▀▀▄  ▄▀▀█▄▄▄▄     
-  ▐  ▄▀   ▐ █ █   ▐ █ █    ▌ ▐ ▄▀ ▀▄ █   █   █ ▐  ▄▀   ▐     
-    █▄▄▄▄▄     ▀▄   ▐ █        █▄▄▄█ ▐  █▀▀▀▀    █▄▄▄▄▄      
-    █    ▌  ▀▄   █    █       ▄▀   █    █        █    ▌      
-   ▄▀▄▄▄▄    █▀▀▀    ▄▀▄▄▄▄▀ █   ▄▀   ▄▀        ▄▀▄▄▄▄       
-   █    ▐    ▐      █     ▐  ▐   ▐   █          █    ▐       
-   ▐                ▐                ▐          ▐            
-               ▄▀▀▀█▀▀▄  ▄▀▀▄ ▄▄   ▄▀▀█▄▄▄▄                  
-              █    █  ▐ █  █   ▄▀ ▐  ▄▀   ▐                  
-              ▐   █     ▐  █▄▄▄█    █▄▄▄▄▄                   
-                 █         █   █    █    ▌                   
-               ▄▀         ▄▀  ▄▀   ▄▀▄▄▄▄                    
-              █          █   █     █    ▐                    
-              ▐          ▐   ▐     ▐                         
-           ▄▀▀▄▀▀▀▄  ▄▀▀▀▀▄   ▄▀▀▀▀▄   ▄▀▀▄ ▄▀▄              
-          █   █   █ █      █ █      █ █  █ ▀  █              
-          ▐  █▀▀█▀  █      █ █      █ ▐  █    █              
-           ▄▀    █  ▀▄    ▄▀ ▀▄    ▄▀   █    █               
-          █     █     ▀▀▀▀     ▀▀▀▀   ▄▀   ▄▀                
-          ▐     ▐                     █    █                 
-                                      ▐    ▐");
+  console.log("Escape the Room");
+}
+
+const playerName = prompt("Enter your name:");
+
+const difficultyOptions = ["easy", "medium", "hard"];
+let difficulty = prompt("Choose difficulty (easy, medium, hard):");
+
+const player = new Player(playerName, difficulty);
+
+  console.log(`Welcome, ${player.name}! Your chosen difficulty is ${player.difficulty}.`);
+  console.log(`Your initial attack damage is ${player.attackDamage}, luck is ${player.luck}.`);
 /*
  ▄▀▀▀▀▄    ▄▀▀█▄   ▄▀▀▄ ▄▀▄  ▄▀▀█▄▄▄▄     
 █         ▐ ▄▀ ▀▄ █  █ ▀  █ ▐  ▄▀   ▐     
