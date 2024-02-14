@@ -28,64 +28,42 @@ ___________                                    ___________.__             ______
         \/     \/     \/     \/|__|        \/                  \/     \/          \/                    \/</_>
 
 */
-class Player {
-    constructor(name, difficulty) {
-      this.name = name;
-      this.difficulty = difficulty;
-      this.score = 0;
-      this.health = 100;
-      this.attackDamage = this.generateRandomDamage(3, 5);
-      this.speed = 10;
-      this.luck = this.generateRandomLuck();
-    }
-}
-
-generateRandomDamage(3, 5) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-  /*
-    increaseScore(points) {
-      this.score += points;
-    }
-
-    
-
-    generateRandomLuck() {
-      return Math.min(Math.floor(Math.random() * 21), 20); // Cap luck at 20
-    }
-  */
-    
+  //Bootup
+  function startGame() {
+      console.log("Welcome to the Escape the Room!");
   
+  //Players inputed name
+  const playerName = prompt("Enter your name:");
   
-class Enemy {
-  constructor(name, difficulty, health, minAttackDamage, maxAttackDamage, speed, luck) {
-    this.name = name;
-    this.difficulty = difficulty;
-    this.health = health;
-    this.minAttackDamage = minAttackDamage;
-    this.maxAttackDamage = maxAttackDamage;
-    this.speed = speed;
-    this.luck = Math.min(luck, 20);
+  //players inputed difficulty
+  const difficultyOptions = ["easy", "medium", "hard"];
+  let difficulty = prompt("Choose difficulty (easy, medium, hard):");
+  
+  if (!difficultyOptions.includes(difficulty)) {
+    console.log("Invalid difficulty. Defaulting to medium.");
+    difficulty = "medium";
   }
-}
-generateRandomDamage(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-function startGame() {
-  console.log("Welcome to");
-  console.log("Escape the Room");
-}
-
-const playerName = prompt("Enter your name:");
-
-const difficultyOptions = ["easy", "medium", "hard"];
-let difficulty = prompt("Choose difficulty (easy, medium, hard):");
-
-const player = new Player(playerName, difficulty);
+  
+  //Createing the player
+  const player = new Player(playerName, difficulty);
 
   console.log(`Welcome, ${player.name}! Your chosen difficulty is ${player.difficulty}.`);
   console.log(`Your initial attack damage is ${player.attackDamage}, luck is ${player.luck}.`);
+  
+  //enemys instances bassed on difficulty
+  const enemy1 = new Enemy("Enemy1", difficulty, 50, 1, 5, 8, 15);
+  const enemy2 = new Enemy("Enemy2", difficulty, 70, 1, 5, 10, 10);
+  
+  
+  //naration
+  console.log("You find yourself in a challenging situation. Get ready for battle!");
+  
+  enemy1.attack(player);
+  
+  console.log("The battle is over. Take a moment to recover.");
+
+  }
+  startGame();
 /*
  ▄▀▀▀▀▄    ▄▀▀█▄   ▄▀▀▄ ▄▀▄  ▄▀▀█▄▄▄▄     
 █         ▐ ▄▀ ▀▄ █  █ ▀  █ ▐  ▄▀   ▐     
