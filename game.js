@@ -32,19 +32,17 @@ function askMultipleChoice(question, choices, callback) {
   });
 }
 
-function startBattle(player, enemy) {
-  console.log(`${enemy.name} approaches! Get ready for battle.`);
-
+function battleRound(player, enemy, callback) {
   const battleChoices = ["Attack the creature", "Look around the room.", "Try to escape"];
   askMultipleChoice("What would you like to do?", battleChoices, (choiceIndex) => {
     switch (choiceIndex) {
       case 0:
         console.log("You attack the creature");
+        player.attack(enemy);
         console.log("The creature recoils as if being touched by you makes it heave in disgust");
         break;
       case 1:
-        console.log("You brace for an attack");
-        console.log("You prepare to be hit ");
+        console.log("You look around the room");
         break;
       case 2:
         console.log("Try to escape");
@@ -55,20 +53,43 @@ function startBattle(player, enemy) {
         break;
     }
 
-    rl.question('Do you want to make another choice during the battle? (yes/no): ', (answer) => {
-      if (answer.toLowerCase() === 'yes') {
-        startBattle(player, enemy);
-      } else {
-        console.log("The battle is over. Take a moment to recover.");
-        acquireKey(player);
-      }
-    });
+    if (player.health <= 0 || enemy.health <= 0) {
+      callback();
+    } else {
+      battleRound(player, enemy, callback);
+    }
   });
 }
 
 function acquireKey(player) {
-  console.log("Congratulations! You've defeated the enemies and acquired a key to escape.");
+  console.log("Congratulations! You've defeated the enemies have a look for loot.");
   console.log("You carefully examine the room and find a hidden key.");
+  console.log("you make your way to the door and unlock it just as you are about to walk out")
+  console.log("you hit on the head and knocked out")
+  console.log("DID YOU ESCAPE FIND OUT NEXT WEEK ON THE NEXT EPISODE OF")
+  console.log(`
+  ▄▀▀█▄▄▄▄  ▄▀▀▀▀▄  ▄▀▄▄▄▄   ▄▀▀█▄   ▄▀▀▄▀▀▀▄  ▄▀▀█▄▄▄▄     
+ ▐  ▄▀   ▐ █ █   ▐ █ █    ▌ ▐ ▄▀ ▀▄ █   █   █ ▐  ▄▀   ▐     
+   █▄▄▄▄▄     ▀▄   ▐ █        █▄▄▄█ ▐  █▀▀▀▀    █▄▄▄▄▄      
+   █    ▌  ▀▄   █    █       ▄▀   █    █        █    ▌      
+  ▄▀▄▄▄▄    █▀▀▀    ▄▀▄▄▄▄▀ █   ▄▀   ▄▀        ▄▀▄▄▄▄       
+  █    ▐    ▐      █     ▐  ▐   ▐   █          █    ▐       
+  ▐                ▐                ▐          ▐            
+              ▄▀▀▀█▀▀▄  ▄▀▀▄ ▄▄   ▄▀▀█▄▄▄▄                  
+             █    █  ▐ █  █   ▄▀ ▐  ▄▀   ▐                  
+             ▐   █     ▐  █▄▄▄█    █▄▄▄▄▄                   
+                █         █   █    █    ▌                   
+              ▄▀         ▄▀  ▄▀   ▄▀▄▄▄▄                    
+             █          █   █     █    ▐                    
+             ▐          ▐   ▐     ▐                         
+          ▄▀▀▄▀▀▀▄  ▄▀▀▀▀▄   ▄▀▀▀▀▄   ▄▀▀▄ ▄▀▄              
+         █   █   █ █      █ █      █ █  █ ▀  █              
+         ▐  █▀▀█▀  █      █ █      █ ▐  █    █              
+          ▄▀    █  ▀▄    ▄▀ ▀▄    ▄▀   █    █               
+         █     █     ▀▀▀▀     ▀▀▀▀   ▄▀   ▄▀                
+         ▐     ▐                     █    █                 
+                                    ▐    ▐
+  `);
 
   rl.close();
 }
@@ -126,36 +147,17 @@ function startGame() {
                   console.log("Invalid choice. Continuing with the default scenario.");
                   break;
               }
+
               console.log("Suddenly, a strange noise echoes through the chamber, sending a shiver down your spine.")
-              console.log("A mysterious creatures emerge from the shadows, their eyes glowing with an otherworldly intensity.")
-              console.log("it looks like a twisted amalgamation of a Centipede and a Rat.")
-              console.log("Your heart races as the creature advance, and you realize that your only way out is to confront it.")
+              console.log("A mysterious creature emerges from the shadows, its eyes glowing with an otherworldly intensity.")
+              console.log("It looks like a twisted amalgamation of a Centipede and a Rat.")
+              console.log("Your heart races as the creature advances, and you realize that your only way out is to confront it.")
               console.log("The room offers minimal cover, and you brace yourself for the impending battle.");
 
-              const battleChoices = ["you attack the creature", "You look around the room.", "try to escape"];
-              askMultipleChoice("What would you like to do?", battleChoices, (battleChoiceIndex) => {
-                switch (battleChoiceIndex) {
-                  case 0:
-                    console.log("you attack the creature");
-                    console.log("the creature recoils as if being touched by you makes it heave in disgust");
-                    break;
-                  case 1:
-                    console.log("you brace for an attack");
-                    console.log("you prepare to be hit ");
-                    break;
-                  case 2:
-                    console.log("try to escape");
-                    console.log("there is nowhere to escape to");
-                    break;
-                  default:
-                    console.log("Invalid choice. Continuing with the default scenario.");
-                    break;
-                }
-                enemy1.attack(player);
-                console.log("The creatures snarl and hiss, closing in on you with malicious intent.")
+              // Call the battleRound function to start the battle
+              battleRound(player, enemy1, () => {
                 console.log("The battle is over. Take a moment to recover.");
-                
-                rl.close();
+                acquireKey(player);
               });
             });
             break;
@@ -169,4 +171,3 @@ function startGame() {
 }
 
 startGame();
-                
