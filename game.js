@@ -33,16 +33,18 @@ function askMultipleChoice(question, choices, callback) {
 }
 
 function battleRound(player, enemy, callback) {
-  const battleChoices = ["Attack the creature", "Look around the room.", "Try to escape"];
+  const battleChoices = ["Attack the creature", "flail in dissary.", "Try to escape"];
   askMultipleChoice("What would you like to do?", battleChoices, (choiceIndex) => {
     switch (choiceIndex) {
       case 0:
         console.log("You attack the creature");
         player.attack(enemy);
         console.log("The creature recoils as if being touched by you makes it heave in disgust");
+        enemy.attack(player);
         break;
       case 1:
-        console.log("You look around the room");
+        console.log("flail in dissary");
+        console,log("the creature imatates you. maybee its mocking you")
         break;
       case 2:
         console.log("Try to escape");
@@ -53,7 +55,27 @@ function battleRound(player, enemy, callback) {
         break;
     }
 
-    if (player.health <= 0 || enemy.health <= 0) {
+    if (player.health <= 0) {
+      console.log(`
+ ▄▀▀▀▀▄   ▄▀▀█▄   ▄▀▀▄ ▄▀▄  ▄▀▀█▄▄▄▄     
+█      █ ▐ ▄▀ ▀▄ █  █ ▀  █ ▐  ▄▀   ▐     
+█      █   █▄▄▄█ ▐  █    █   █▄▄▄▄▄      
+█     █ █  ▄▀   █   █    █    █    ▌      
+▐▀▄▄▄▄▀ ▐ █   ▄▀  ▄▀   ▄▀    ▄▀▄▄▄▄       
+ ▐         ▐   ▐   █    █     █    ▐       
+                   ▐    ▐     ▐            
+ ▄▀▀▀▀▄   ▄▀▀▄ ▄▀▀▄  ▄▀▀█▄▄▄▄  ▄▀▀▄▀▀▀▄   
+█      █ █   █    █ ▐  ▄▀   ▐ █   █   █   
+█      █ ▐  █    █    █▄▄▄▄▄  ▐  █▀▀█▀    
+▀▄    ▄▀   █   ▄▀    █    ▌   ▄▀    █    
+  ▀▀▀▀      ▀▄▀     ▄▀▄▄▄▄   █     █     
+                     █    ▐   ▐     ▐     
+                     ▐                  
+`);
+
+      rl.close();
+    } else if (enemy.health <= 0) {
+      console.log("You defeated the creature!");
       callback();
     } else {
       battleRound(player, enemy, callback);
@@ -62,11 +84,10 @@ function battleRound(player, enemy, callback) {
 }
 
 function acquireKey(player) {
-  console.log("Congratulations! You've defeated the enemies have a look for loot.");
+  console.log("Congratulations! You've defeated the enemie look for loot.");
   console.log("You carefully examine the room and find a hidden key.");
-  console.log("you make your way to the door and unlock it just as you are about to walk out")
-  console.log("you hit on the head and knocked out")
-  console.log("DID YOU ESCAPE FIND OUT NEXT WEEK ON THE NEXT EPISODE OF")
+  console.log("as you unlock the door and go to step outside your hit on the head and knocked out")
+  console.log("DID YOU ESCAPE? FIND OUT NEXT WEEK ON")
   console.log(`
   ▄▀▀█▄▄▄▄  ▄▀▀▀▀▄  ▄▀▄▄▄▄   ▄▀▀█▄   ▄▀▀▄▀▀▀▄  ▄▀▀█▄▄▄▄     
  ▐  ▄▀   ▐ █ █   ▐ █ █    ▌ ▐ ▄▀ ▀▄ █   █   █ ▐  ▄▀   ▐     
@@ -88,7 +109,7 @@ function acquireKey(player) {
           ▄▀    █  ▀▄    ▄▀ ▀▄    ▄▀   █    █               
          █     █     ▀▀▀▀     ▀▀▀▀   ▄▀   ▄▀                
          ▐     ▐                     █    █                 
-                                    ▐    ▐
+                                      ▐    ▐
   `);
 
   rl.close();
@@ -96,6 +117,29 @@ function acquireKey(player) {
 
 function startGame() {
   console.log("You awaken in a dimly lit room, disoriented and groggy. As your eyes adjust to the low light, you notice the cold, stone walls that confine you.");
+  console.log(`
+  ▄▀▀█▄▄▄▄  ▄▀▀▀▀▄  ▄▀▄▄▄▄   ▄▀▀█▄   ▄▀▀▄▀▀▀▄  ▄▀▀█▄▄▄▄     
+ ▐  ▄▀   ▐ █ █   ▐ █ █    ▌ ▐ ▄▀ ▀▄ █   █   █ ▐  ▄▀   ▐     
+   █▄▄▄▄▄     ▀▄   ▐ █        █▄▄▄█ ▐  █▀▀▀▀    █▄▄▄▄▄      
+   █    ▌  ▀▄   █    █       ▄▀   █    █        █    ▌      
+  ▄▀▄▄▄▄    █▀▀▀    ▄▀▄▄▄▄▀ █   ▄▀   ▄▀        ▄▀▄▄▄▄       
+  █    ▐    ▐      █     ▐  ▐   ▐   █          █    ▐       
+  ▐                ▐                ▐          ▐            
+              ▄▀▀▀█▀▀▄  ▄▀▀▄ ▄▄   ▄▀▀█▄▄▄▄                  
+             █    █  ▐ █  █   ▄▀ ▐  ▄▀   ▐                  
+             ▐   █     ▐  █▄▄▄█    █▄▄▄▄▄                   
+                █         █   █    █    ▌                   
+              ▄▀         ▄▀  ▄▀   ▄▀▄▄▄▄                    
+             █          █   █     █    ▐                    
+             ▐          ▐   ▐     ▐                         
+          ▄▀▀▄▀▀▀▄  ▄▀▀▀▀▄   ▄▀▀▀▀▄   ▄▀▀▄ ▄▀▄              
+         █   █   █ █      █ █      █ █  █ ▀  █              
+         ▐  █▀▀█▀  █      █ █      █ ▐  █    █              
+          ▄▀    █  ▀▄    ▄▀ ▀▄    ▄▀   █    █               
+         █     █     ▀▀▀▀     ▀▀▀▀   ▄▀   ▄▀                
+         ▐     ▐                     █    █                 
+                                      ▐    ▐
+  `);
 
   rl.question("Enter your name: ", (playerName) => {
     const difficultyOptions = ["easy", "medium", "hard"];
