@@ -21,5 +21,6 @@ class Player {
       return Math.min(Math.floor(Math.random() * 21), 20);
     }
   }
+export default Player;
     
   
