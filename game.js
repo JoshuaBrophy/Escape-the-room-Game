@@ -1,33 +1,3 @@
-/*np
- ▄▀▀█▄▄▄▄  ▄▀▀▀▀▄  ▄▀▄▄▄▄   ▄▀▀█▄   ▄▀▀▄▀▀▀▄  ▄▀▀█▄▄▄▄     
-▐  ▄▀   ▐ █ █   ▐ █ █    ▌ ▐ ▄▀ ▀▄ █   █   █ ▐  ▄▀   ▐     
-  █▄▄▄▄▄     ▀▄   ▐ █        █▄▄▄█ ▐  █▀▀▀▀    █▄▄▄▄▄      
-  █    ▌  ▀▄   █    █       ▄▀   █    █        █    ▌      
- ▄▀▄▄▄▄    █▀▀▀    ▄▀▄▄▄▄▀ █   ▄▀   ▄▀        ▄▀▄▄▄▄       
- █    ▐    ▐      █     ▐  ▐   ▐   █          █    ▐       
- ▐                ▐                ▐          ▐            
-             ▄▀▀▀█▀▀▄  ▄▀▀▄ ▄▄   ▄▀▀█▄▄▄▄                  
-            █    █  ▐ █  █   ▄▀ ▐  ▄▀   ▐                  
-            ▐   █     ▐  █▄▄▄█    █▄▄▄▄▄                   
-               █         █   █    █    ▌                   
-             ▄▀         ▄▀  ▄▀   ▄▀▄▄▄▄                    
-            █          █   █     █    ▐                    
-            ▐          ▐   ▐     ▐                         
-         ▄▀▀▄▀▀▀▄  ▄▀▀▀▀▄   ▄▀▀▀▀▄   ▄▀▀▄ ▄▀▄              
-        █   █   █ █      █ █      █ █  █ ▀  █              
-        ▐  █▀▀█▀  █      █ █      █ ▐  █    █              
-         ▄▀    █  ▀▄    ▄▀ ▀▄    ▄▀   █    █               
-        █     █     ▀▀▀▀     ▀▀▀▀   ▄▀   ▄▀                
-        ▐     ▐                     █    █                 
-                                    ▐    ▐                 
-___________                                    ___________.__             __________                       
-\_   _____/ ______ ____ _____  ______   ____   \__    ___/|  |__   ____   \______   \ ____   ____   _____  
- |    __)_ /  ___// ___\\__  \ \____ \_/ __ \    |    |   |  |  \_/ __ \   |       _//  _ \ /  _ \ /     \ 
- |        \\___ \\  \___ / __ \|  |_> >  ___/    |    |   |   Y  \  ___/   |    |   (  <_> |  <_> )  Y Y  \
-/_______  /____  >\___  >____  /   __/ \___  >   |____|   |___|  /\___  >  |____|_  /\____/ \____/|__|_|  /
-        \/     \/     \/     \/|__|        \/                  \/     \/          \/                    \/</_>
-
-*/
 import Player from './player.js';
 import Enemy from './enemy.js';
 import readline from 'readline';
@@ -49,52 +19,79 @@ function askMultipleChoice(question, choices, callback) {
       callback(choice - 1);
     } else {
       console.log('Invalid choice. Defaulting to the first option.');
-      
       callback(0);
     }
+
+    rl.question('Do you want to make another choice? (yes/no): ', (answer) => {
+      if (answer.toLowerCase() === 'yes') {
+        askMultipleChoice(question, choices, callback);
+      } else {
+        rl.close();
+      }
+    });
   });
 }
 
 function startBattle(player, enemy) {
   console.log(`${enemy.name} approaches! Get ready for battle.`);
 
-  const playerAttack = player.generateRandomDamage(3, 5);
-  console.log(`${player.name} attacks ${enemy.name} for ${playerAttack} damage!`);
+  const battleChoices = ["Attack the creature", "Look around the room.", "Try to escape"];
+  askMultipleChoice("What would you like to do?", battleChoices, (choiceIndex) => {
+    switch (choiceIndex) {
+      case 0:
+        console.log("You attack the creature");
+        console.log("The creature recoils as if being touched by you makes it heave in disgust");
+        break;
+      case 1:
+        console.log("You brace for an attack");
+        console.log("You prepare to be hit ");
+        break;
+      case 2:
+        console.log("Try to escape");
+        console.log("There is nowhere to escape to");
+        break;
+      default:
+        console.log("Invalid choice. Continuing with the default scenario.");
+        break;
+    }
 
-  const enemyAttack = enemy.generateRandomDamage(1, 5);
-  if (Math.random() * 100 < player.luck) {
-    console.log(`${enemy.name} missed the attack!`);
-  } else {
-    player.health -= enemyAttack;
-    console.log(`${enemy.name} counterattacks ${player.name} for ${enemyAttack} damage!`);
-    console.log(`${player.name}'s health: ${player.health}`);
-  }
+    rl.question('Do you want to make another choice during the battle? (yes/no): ', (answer) => {
+      if (answer.toLowerCase() === 'yes') {
+        startBattle(player, enemy);
+      } else {
+        console.log("The battle is over. Take a moment to recover.");
+        acquireKey(player);
+      }
+    });
+  });
+}
+
+function acquireKey(player) {
+  console.log("Congratulations! You've defeated the enemies and acquired a key to escape.");
+  console.log("You carefully examine the room and find a hidden key.");
+
+  rl.close();
 }
 
 function startGame() {
   console.log("You awaken in a dimly lit room, disoriented and groggy. As your eyes adjust to the low light, you notice the cold, stone walls that confine you.");
 
-  
   rl.question("Enter your name: ", (playerName) => {
-    
     const difficultyOptions = ["easy", "medium", "hard"];
     askMultipleChoice("Choose difficulty (easy, medium, hard):", difficultyOptions, (difficultyIndex) => {
       const difficulty = difficultyOptions[difficultyIndex];
 
       console.log(`Welcome, ${playerName}! Your chosen difficulty is ${difficulty}.`);
 
-      
       const player = new Player(playerName, difficulty);
       console.log(`Your initial attack damage is ${player.attackDamage}, luck is ${player.luck}.`);
 
-      
       const enemy1 = new Enemy("Enemy1", difficulty, 50, 1, 5, 8, 15);
       const enemy2 = new Enemy("Enemy2", difficulty, 70, 1, 5, 10, 10);
 
-      
-      const choices = ["You approach the mysterious door...", "You look around the room."];
-      askMultipleChoice("What would you like to do?", choices, (choiceIndex) => {
-        switch (choiceIndex) {
+      const choices1 = ["You approach the mysterious door...", "You look around the room."];
+      askMultipleChoice("What would you like to do?", choices1, (choiceIndex1) => {
+        switch (choiceIndex1) {
           case 0:
             console.log("You approach the mysterious door...");
             console.log("you try to open the door any way you can think of but to no avail");
@@ -102,40 +99,74 @@ function startGame() {
             break;
           case 1:
             console.log("You look around the room");
-            console.log("but only see a boarded-up window that has been also barred on the other side too");
-            console.log("and also a small hole in the wall");
+            const choices2 = ["check the window just in case it's loose", "attempt to break the door", "take your time and rest", "Shout for help"];
+            askMultipleChoice("What would you like to do?", choices2, (choiceIndex2) => {
+              switch (choiceIndex2) {
+                case 0:
+                  console.log("check the window just in case it's loose");
+                  console.log("you try to open the window but it's locked tight");
+                  console.log("you can still hear a dog barking though");
+                  break;
+                case 1:
+                  console.log("attempt to break the door");
+                  console.log("with all the strength you can muster you hurl yourself at the door!");
+                  console.log("but it does nothing but chip a chunk of wood off the door frame");
+                  break;
+                case 2:
+                  console.log("take your time and rest");
+                  console.log("you try to remember what led to you being locked in this room");
+                  console.log("you notice a large bump on your head this explains the concussed feeling you've got");
+                  break;
+                case 3:
+                  console.log("Shout for help");
+                  console.log("You start shouting at the top of your lungs, HELP!!!");
+                  console.log("you hear a loud commotion coming from that small hole");
+                  break;
+                default:
+                  console.log("Invalid choice. Continuing with the default scenario.");
+                  break;
+              }
+              console.log("Suddenly, a strange noise echoes through the chamber, sending a shiver down your spine.")
+              console.log("A mysterious creatures emerge from the shadows, their eyes glowing with an otherworldly intensity.")
+              console.log("it looks like a twisted amalgamation of a Centipede and a Rat.")
+              console.log("Your heart races as the creature advance, and you realize that your only way out is to confront it.")
+              console.log("The room offers minimal cover, and you brace yourself for the impending battle.");
+
+              const battleChoices = ["you attack the creature", "You look around the room.", "try to escape"];
+              askMultipleChoice("What would you like to do?", battleChoices, (battleChoiceIndex) => {
+                switch (battleChoiceIndex) {
+                  case 0:
+                    console.log("you attack the creature");
+                    console.log("the creature recoils as if being touched by you makes it heave in disgust");
+                    break;
+                  case 1:
+                    console.log("you brace for an attack");
+                    console.log("you prepare to be hit ");
+                    break;
+                  case 2:
+                    console.log("try to escape");
+                    console.log("there is nowhere to escape to");
+                    break;
+                  default:
+                    console.log("Invalid choice. Continuing with the default scenario.");
+                    break;
+                }
+                enemy1.attack(player);
+                console.log("The creatures snarl and hiss, closing in on you with malicious intent.")
+                console.log("The battle is over. Take a moment to recover.");
+                
+                rl.close();
+              });
+            });
             break;
           default:
             console.log("Invalid choice. Continuing with the default scenario.");
             break;
         }
-
-        
-        
-        rl.close();
       });
     });
   });
 }
 
-
 startGame();
-
-/*
- ▄▀▀▀▀▄    ▄▀▀█▄   ▄▀▀▄ ▄▀▄  ▄▀▀█▄▄▄▄     
-█         ▐ ▄▀ ▀▄ █  █ ▀  █ ▐  ▄▀   ▐     
-█    ▀▄▄    █▄▄▄█ ▐  █    █   █▄▄▄▄▄      
-█     █ █  ▄▀   █   █    █    █    ▌      
-▐▀▄▄▄▄▀ ▐ █   ▄▀  ▄▀   ▄▀    ▄▀▄▄▄▄       
-▐         ▐   ▐   █    █     █    ▐       
-                  ▐    ▐     ▐            
- ▄▀▀▀▀▄   ▄▀▀▄ ▄▀▀▄  ▄▀▀█▄▄▄▄  ▄▀▀▄▀▀▀▄   
-█      █ █   █    █ ▐  ▄▀   ▐ █   █   █   
-█      █ ▐  █    █    █▄▄▄▄▄  ▐  █▀▀█▀    
-▀▄    ▄▀    █   ▄▀    █    ▌   ▄▀    █    
-  ▀▀▀▀       ▀▄▀     ▄▀▄▄▄▄   █     █     
-                     █    ▐   ▐     ▐     
-                     ▐                  
-
-
-*/
+                
