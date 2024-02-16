@@ -2,7 +2,7 @@ class Player {
   constructor(name, difficulty) {
     this.name = name;
     this.difficulty = difficulty;
-    this.health = 100;
+    this.health = 70;
     this.attackDamageRange = [3, 5];
     this.luck = 10;
   }

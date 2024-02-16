@@ -198,7 +198,7 @@ function startGame() {
               console.log("Your heart races as the creature advances, and you realize that your only way out is to confront it.")
               console.log("The room offers minimal cover, and you brace yourself for the impending battle.");
 
-              // Call the battleRound function to start the battle
+              
               battleRound(player, enemy1, () => {
                 console.log("The battle is over. Take a moment to recover.");
                 acquireKey(player);

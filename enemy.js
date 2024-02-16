@@ -2,9 +2,9 @@ export default class Enemy {
     constructor(name, difficulty, health, minAttackDamage, maxAttackDamage, speed, luck) {
       this.name = name;
       this.difficulty = difficulty;
-      this.health = health;
-      this.minAttackDamage = minAttackDamage;
-      this.maxAttackDamage = maxAttackDamage;
+      this.health = 60;
+      this.minAttackDamage = 3;
+      this.maxAttackDamage = 7;
       this.speed = speed;
       this.luck = Math.min(luck, 20);
     }
